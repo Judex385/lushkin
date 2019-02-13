@@ -1,0 +1,185 @@
+<html>
+
+<head>
+	<title>Задача 6</title>
+	<link type="text/css" rel="stylesheet" href="addons/css/bootstrap.min.css" media="screen,projection" />
+	<link rel="stylesheet" href="addons/font.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body onload="fill_matrix();">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<button type="button" class="btn btn-primary" onclick="window.location='index.html'">Назад</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h3>Задание:<br>Найти координаты max-го значения среди всех тех строк i, элементы которых совпадают с элементами i-тых столбцов</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h5>Матрица:</h5>
+				<table id="tabl" class="table table-striped">
+					<tr id="s1">
+						<td><input class="form-control" id="d11"></td>
+						<td><input class="form-control" id="d12"></td>
+						<td><input class="form-control" id="d13"></td>
+						<td><input class="form-control" id="d14"></td>
+					</tr>
+					<tr id="s2">
+						<td><input class="form-control" id="d21"></td>
+						<td><input class="form-control" id="d22"></td>
+						<td><input class="form-control" id="d23"></td>
+						<td><input class="form-control" id="d24"></td>
+					</tr>
+					<tr id="s3">
+						<td><input class="form-control" id="d31"></td>
+						<td><input class="form-control" id="d32"></td>
+						<td><input class="form-control" id="d33"></td>
+						<td><input class="form-control" id="d34"></td>
+					</tr>
+					<tr id="s4">
+						<td><input class="form-control" id="d41"></td>
+						<td><input class="form-control" id="d42"></td>
+						<td><input class="form-control" id="d43"></td>
+						<td><input class="form-control" id="d44"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="btn-group btn-group-lg" role="group">
+					<button type="button" class="btn btn-primary" onclick="reset();">Сбросить</button>
+					<button type="button" class="btn btn-primary" onclick="fill_matrix();">Заполнить матрицу</button>
+					<button type="button" class="btn btn-primary" onclick="start();">Проверить</button>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<form>
+					<div class="form-group">
+						<label for="cons">Результаты:</label>
+						<textarea class="form-control" id="cons" rows="15" readonly></textarea>
+						<button type="button" class="btn btn-primary" onclick="clear_cons();">Очистить</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+		var n = 4;
+		var cons = document.getElementById("cons");
+
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
+
+		function addText(s) {
+			cons.value = cons.value + s + "\r\n";
+		}
+
+		function reset() {
+			addText("Сброс значений в таблице");
+			var i, j;
+			for (var i = 1; i <= 4; i++) {
+				var s = "s" + i;
+				document.getElementById(String(s)).style.display = "block";
+			}
+			for (i = 0; i <= n - 1; i++) {
+				for (j = 0; j <= n - 1; j++) {
+					var i1 = i + 1;
+					var j1 = j + 1;
+					document.getElementById("d" + i1 + j1).value = "";
+					document.getElementById("d" + i1 + j1).style.display = "block";
+				}
+			}
+		}
+
+		function clear_cons() {
+			cons.value = "";
+		}
+
+		function fill_matrix() {
+			addText("Заполнение матрицы случайными числами");
+			var i, j;
+			for (i = 0; i <= n - 1; i++) {
+				for (j = 0; j <= n - 1; j++) {
+					var i1 = i + 1;
+					var j1 = j + 1;
+					document.getElementById("d" + i1 + j1).value = getRandomInt(1, 9);
+				}
+			}
+		}
+		function start() {
+			console.clear();
+			var k, i, j;
+			var A = new Array(n);
+			for (i = 0; i <= n - 1; i++) {
+				A[i] = new Array(n);
+			}
+			for (i = 1; i <= n; i++) {
+				for (j = 1; j <= n; j++) {
+					A[i - 1][j - 1] = document.getElementById("d" + i + j).value;
+				}
+			}
+            /*
+            Пример:
+            1 2 3 4
+            2 5 8 4
+            3 6 8 9
+            4 7 8 9
+
+            первая строка и первый столбец совпадают, значит мы находим максимальное значение в строке 1
+            */
+            //начало алгоритма
+			var A1 = new Array(n);
+            var A2 = new Array(n);
+            var maxc = "0";
+			//Сравнение строк 
+			for (i = 1; i <= n; i++) {
+				A1 = [];
+				A2 = [];
+				for (j = 1; j <= n; j++) {
+                    A1.push(A[i - 1][j - 1]);
+                    A2.push(A[j - 1][i - 1]);
+				}
+				console.log("--------------------------------");
+                console.log("Строка #" + i + ": " + A1.valueOf());
+                console.log("Столбец #" + i + ": " + A2.valueOf());
+                var compare = 0;
+                for (j = 0; j <= n-1; j++) {
+                    if(A1[j]!=A2[j]){
+                        compare = 1;
+                    }
+                }
+                if(compare == 0){
+                    var max = A1[0];
+                    for (j = 0; j <= n-1; j++) {
+                        for (var j1 = 0; j1 <= n-1; j1++) {
+                            if(A1[j]>A1[j1]){
+                                max = A1[j];
+                                var j3 = j+1;
+                                maxc = i+","+j3;
+                            }
+                        }
+                    }
+                }
+            }
+            if(maxc!="0"){
+                addText("Максимальное значение: " + max + " которое находиться по координатам: "+maxc);
+                console.log("Max: " +max);
+                console.log("Maxc: " +maxc);
+            }
+            else{
+                addText("Таких значений не найденно!");
+            }
+		}
+	</script>
+</body>
+
+</html>
