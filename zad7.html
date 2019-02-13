@@ -1,0 +1,213 @@
+<html>
+
+<head>
+	<title>Задача 7</title>
+	<link type="text/css" rel="stylesheet" href="addons/css/bootstrap.min.css" media="screen,projection" />
+	<link rel="stylesheet" href="addons/font.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body onload="fill_matrix();">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<button type="button" class="btn btn-primary" onclick="window.location='index.html'">Назад</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h3>Задание:<br>Запомнить коориднаты элемнтов матрицы, которые являются min-ми в своей строки и max-ми в своём столбце</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h5>Матрица:</h5>
+				<table id="tabl" class="table table-striped">
+					<tr id="s1">
+						<td><input class="form-control" id="d11"></td>
+						<td><input class="form-control" id="d12"></td>
+						<td><input class="form-control" id="d13"></td>
+						<td><input class="form-control" id="d14"></td>
+						<td><input class="form-control" id="d15"></td>
+					</tr>
+					<tr id="s2">
+						<td><input class="form-control" id="d21"></td>
+						<td><input class="form-control" id="d22"></td>
+						<td><input class="form-control" id="d23"></td>
+						<td><input class="form-control" id="d24"></td>
+						<td><input class="form-control" id="d25"></td>
+					</tr>
+					<tr id="s3">
+						<td><input class="form-control" id="d31"></td>
+						<td><input class="form-control" id="d32"></td>
+						<td><input class="form-control" id="d33"></td>
+						<td><input class="form-control" id="d34"></td>
+						<td><input class="form-control" id="d35"></td>
+					</tr>
+					<tr id="s4">
+						<td><input class="form-control" id="d41"></td>
+						<td><input class="form-control" id="d42"></td>
+						<td><input class="form-control" id="d43"></td>
+						<td><input class="form-control" id="d44"></td>
+						<td><input class="form-control" id="d45"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="btn-group btn-group-lg" role="group">
+					<button type="button" class="btn btn-primary" onclick="reset();">Сбросить</button>
+					<button type="button" class="btn btn-primary" onclick="fill_matrix();">Заполнить матрицу</button>
+					<button type="button" class="btn btn-primary" onclick="start();">Проверить</button>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<form>
+					<div class="form-group">
+						<label for="cons">Результаты:</label>
+						<textarea class="form-control" id="cons" rows="15" readonly></textarea>
+						<button type="button" class="btn btn-primary" onclick="clear_cons();">Очистить</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+		var n = 5;
+		var m = 4;
+		var cons = document.getElementById("cons");
+
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
+
+		function addText(s) {
+			cons.value = cons.value + s + "\r\n";
+		}
+
+		function reset() {
+			addText("Сброс значений в таблице");
+			var i, j;
+			for (var i = 1; i <= 4; i++) {
+				var s = "s" + i;
+				document.getElementById(String(s)).style.display = "block";
+			}
+			for (i = 0; i <= m - 1; i++) {
+				for (j = 0; j <= n - 1; j++) {
+					var i1 = i + 1;
+					var j1 = j + 1;
+					document.getElementById("d" + i1 + j1).value = "";
+					document.getElementById("d" + i1 + j1).style.display = "block";
+				}
+			}
+		}
+
+		function clear_cons() {
+			cons.value = "";
+		}
+
+		function fill_matrix() {
+			addText("Заполнение матрицы случайными числами");
+			var i, j;
+			for (i = 0; i <= m - 1; i++) {
+				for (j = 0; j <= n - 1; j++) {
+					var i1 = i + 1;
+					var j1 = j + 1;
+					document.getElementById("d" + i1 + j1).value = getRandomInt(1, 9);
+				}
+			}
+		}
+
+        function findMin(A){
+            var min = A[0];
+            for(var k=0;k<=n-1;k++){
+                for (var j = 1; j <= m-1; j++) {
+                    if(A[k]<min){
+                        min = A[k];
+                    }
+                }                
+            }
+            return min;
+        }
+
+		function start() {
+			console.clear();
+			var i, j;
+			var A = new Array(n);
+			for (i = 0; i <= n - 1; i++) {
+				A[i] = new Array(n);
+			}
+			for (i = 1; i <= m; i++) {
+				for (j = 1; j <= n; j++) {
+					A[i - 1][j - 1] = document.getElementById("d" + i + j).value;
+				}
+            }
+            console.log(A.valueOf());
+			//начало алгоритма
+			var A1 = new Array(n);
+            var max_array = new Array(n);
+            var min_array = new Array(m);
+			//Поиск минимума в каждой строке
+			for (i = 0; i <= m-1; i++) {
+				A1 = [];
+				for (j = 0; j <= n-1; j++) {
+                    A1.push(A[i][j]);
+                }
+                var min = A1[0];
+                var j3 = 1;
+                for(var k=0;k<=n-1;k++){
+                    for (var j = 1; j <= n-1; j++) {
+                        if(A1[k]<min){
+                            min = A1[k];
+                            j3 = k+1;
+                        }
+                    }
+                }
+                var i1 = i+1;
+                var minc = i1+","+j3;
+                min_array[i] = minc;
+            }
+            //Поиск максимума в каждом столбце
+			for (i = 0; i <= n-1; i++) {
+				A1 = [];
+				for (j = 0; j <= m-1; j++) {
+                    A1.push(A[j][i]);
+                }
+                var max = A1[0];
+                var j3 = 1;
+                for(var k=0;k<=n-1;k++){
+                    for (var j = 1; j <= n-1; j++) {
+                        if(A1[k]>max){
+                            max = A1[k];
+                            j3 = k+1;
+                        }
+                    }
+                }
+                var i1 = i+1;
+                var maxc = j3+","+i1;
+                max_array[i] = maxc;
+            }
+            var ans = [];
+            answ=0;
+            for(i = 0; i<=n-1; i++){
+                for(var i1=0; i1<=m-1; i1++){
+                    if(min_array[i1]==max_array[i]){
+                        answ = 1;
+                        ans.push(min_array[i1]);
+                    }
+                }
+            }
+            if(answ==1){
+                addText("Координаты подходящих элементов: "+ans.valueOf());
+            }
+            else{
+                addText("Не найденно подходящих элементов!");
+            }
+		}
+	</script>
+</body>
+
+</html>
