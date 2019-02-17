@@ -16,7 +16,9 @@
 		</div>
 		<div class="row">
 			<div class="col">
-				<h3>Задание:<br>Удалить все строки, столбцы из матрицы элементы которой упорядочены по возрастанию или убыванию</h3>
+				<div class="alert alert-success" role="alert">
+					<h3>Задание:<br>Удалить все строки, столбцы из матрицы элементы которой упорядочены по возрастанию или убыванию</h3>
+				</div>
 			</div>
 		</div>
 		<div class="row">
@@ -67,9 +69,11 @@
 			<div class="col">
 				<form>
 					<div class="form-group">
-						<label for="cons">Результаты:</label>
-						<textarea class="form-control" id="cons" rows="15" readonly></textarea>
-						<button type="button" class="btn btn-primary" onclick="clear_cons();">Очистить</button>
+						<label for="cons">
+							<h5>Результаты:</h5>
+						</label>
+						<textarea class="form-control" id="cons" rows="8" readonly></textarea>
+						<button style="margin-top:5px;" type="button" class="btn btn-primary" onclick="clear_cons();">Очистить</button>
 					</div>
 				</form>
 			</div>
@@ -78,6 +82,7 @@
 	<script>
 		var n = 5;
 		var m = 4;
+		var hasResults = 0;
 		var cons = document.getElementById("cons");
 
 		function getRandomInt(min, max) {
@@ -125,6 +130,7 @@
 			if (a > b) return 1;
 			if (a < b) return -1;
 		}
+
 		function compareDown(a, b) {
 			if (a < b) return 1;
 			if (a > b) return -1;
@@ -178,8 +184,9 @@
 				if (comparUp == 0 || comparDown == 0) {
 					console.log("Массивы равны!");
 					var s = "s" + i;
-					addText("Была удалёна строка №" + i + "с значениями " + A[i-1].valueOf());
-					document.getElementById(String(s)).style.display = "none";
+					addText("Была удалёна строка №" + i + "с значениями " + A[i - 1].valueOf());
+					hasResults = 1;
+					document.getElementById(String(s)).style.backgroundColor = "red";
 				}
 			}
 			//Сравнение столбцов
@@ -213,14 +220,20 @@
 				}
 				if (comparUp == 0 || comparDown == 0) {
 					console.log("Массивы равны!");
-					addText("Был удалён столбец №" + j + "с значениями " + A[0][j-1]+ "," +A[1][j-1]+ "," +A[2][j-1]+ "," +A[3][j-1]);
+					addText("Был удалён столбец №" + j + "с значениями " + A[0][j - 1] + "," + A[1][j - 1] + "," + A[2][j - 1] + "," +
+						A[3][j - 1]);
+					hasResults = 1;
 					for (i = 1; i <= m; i++) {
 						var s = "d" + i + j;
-						document.getElementById(String(s)).style.display = "none";
+						document.getElementById(String(s)).style.backgroundColor = "red";
 					}
 				}
 			}
-			addText("Готово!");
+			if (hasResults == 0) {
+				addText("Не найденно решений!");
+			} else {
+				addText("Готово!");
+			}
 		}
 	</script>
 </body>

@@ -1,91 +1,170 @@
-<html>	
-	<head>	
-		<title>������ 1</title>
-	</head>
-	<body onload="start();">
-		<a href="index.html">�����</a>
-		<table id="tabl">
-  <tr id="s1">
-    <td><input id="d11"></td>
-    <td><input id="d12"></td>
-    <td><input id="d13"></td>
-    <td><input id="d14"></td>
-	<td><input id="d15"></td>
-  </tr>
-  <tr id="s2">
-    <td><input id="d21"></td>
-    <td><input id="d22"></td>
-    <td><input id="d23"></td>
-    <td><input id="d24"></td>
-	<td><input id="d25"></td>
-  </tr>
-  <tr id="s3">
-    <td><input id="d31"></td>
-    <td><input id="d32"></td>
-    <td><input id="d33"></td>
-    <td><input id="d34"></td>
-	<td><input id="d35"></td>
-  </tr>
-  <tr id="s4">
-    <td><input id="d41"></td>
-    <td><input id="d42"></td>
-    <td><input id="d43"></td>
-    <td><input id="d44"></td>
-	<td><input id="d45"></td>
-  </tr>
-</table>
-<button onclick="start();">Start</button>
-		<script>
-			function getRandomInt(min, max) {
-				return Math.floor(Math.random() * (max - min)) + min;
+<html>
+
+<head>
+	<title>Задача 1</title>
+	<link type="text/css" rel="stylesheet" href="addons/css/bootstrap.min.css" media="screen,projection" />
+	<link rel="stylesheet" href="addons/font.css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body onload="fill_matrix();">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<button type="button" class="btn btn-primary" onclick="window.location='index.html'">Назад</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="alert alert-success" role="alert">
+					<h3>Задание:<br>Удалить все строки, в которых кол-во нечётных чисел больше кол-ва чётных</h3>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h5>Матрица:</h5>
+				<table id="tabl" class="table table-striped">
+					<tr id="s1">
+						<td><input class="form-control" id="d11"></td>
+						<td><input class="form-control" id="d12"></td>
+						<td><input class="form-control" id="d13"></td>
+						<td><input class="form-control" id="d14"></td>
+						<td><input class="form-control" id="d15"></td>
+					</tr>
+					<tr id="s2">
+						<td><input class="form-control" id="d21"></td>
+						<td><input class="form-control" id="d22"></td>
+						<td><input class="form-control" id="d23"></td>
+						<td><input class="form-control" id="d24"></td>
+						<td><input class="form-control" id="d25"></td>
+					</tr>
+					<tr id="s3">
+						<td><input class="form-control" id="d31"></td>
+						<td><input class="form-control" id="d32"></td>
+						<td><input class="form-control" id="d33"></td>
+						<td><input class="form-control" id="d34"></td>
+						<td><input class="form-control" id="d35"></td>
+					</tr>
+					<tr id="s4">
+						<td><input class="form-control" id="d41"></td>
+						<td><input class="form-control" id="d42"></td>
+						<td><input class="form-control" id="d43"></td>
+						<td><input class="form-control" id="d44"></td>
+						<td><input class="form-control" id="d45"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="btn-group btn-group-lg" role="group">
+					<button type="button" class="btn btn-primary" onclick="reset();">Сбросить</button>
+					<button type="button" class="btn btn-primary" onclick="fill_matrix();">Заполнить матрицу</button>
+					<button type="button" class="btn btn-primary" onclick="start();">Проверить</button>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<form>
+					<div class="form-group">
+						<label for="cons">
+							<h5>Результаты:</h5>
+						</label>
+						<textarea class="form-control" id="cons" rows="8" readonly></textarea>
+						<button style="margin-top:5px;" type="button" class="btn btn-primary" onclick="clear_cons();">Очистить</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+		var n = 5;
+		var m = 4;
+		var hasResults = 0;
+		var cons = document.getElementById("cons");
+
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
+
+		function reset() {
+			addText("Сброс значений в таблице");
+			var i, j;
+			for (var i = 1; i <= 4; i++) {
+				var s = "s" + i;
+				document.getElementById(String(s)).style.display = "block";
+				document.getElementById(String(s)).style.backgroundColor = "white";
 			}
-			function reset(){
-				for (var i=1; i<=4; i++){
-					var s = "s"+i;
-					document.getElementById(String(s)).style.display = "block";
+			for (i = 0; i <= m - 1; i++) {
+				for (j = 0; j <= n - 1; j++) {
+					var i1 = i + 1;
+					var j1 = j + 1;
+					document.getElementById("d" + i1 + j1).value = "";
+					document.getElementById("d" + i1 + j1).style.display = "block";
 				}
 			}
-			function start(){
-				reset();
-				var n = 5;
-				var m = 4;
-				var k, i, j;
-				var chet=0;
-				var nechet = 0;
-				var A = new Array(n);
-				
-				for (i=0; i<=m-1; i++) {
-					A[i]=new Array(n);
+		}
+
+		function addText(s) {
+			cons.value = cons.value + s + "\r\n";
+		}
+
+		function fill_matrix() {
+			addText("Заполнение матрицы случайными числами");
+			var i, j;
+			for (i = 0; i <= m - 1; i++) {
+				for (j = 0; j <= n - 1; j++) {
+					var i1 = i + 1;
+					var j1 = j + 1;
+					document.getElementById("d" + i1 + j1).value = getRandomInt(1, 9);
 				}
-				for (i=0; i<=m-1; i++){
-					for (j=0;j<=n-1;j++){
-						var i1 = i+1;
-						var j1 = j+1;
-						document.getElementById("d"+i1+j1).value = getRandomInt(1,9);
+			}
+		}
+
+		function clear_cons() {
+			cons.value = "";
+		}
+
+		function start() {
+			var n = 5;
+			var m = 4;
+			var k, i, j;
+			var chet = 0;
+			var nechet = 0;
+			var A = new Array(n);
+
+			for (i = 0; i <= m - 1; i++) {
+				A[i] = new Array(n);
+			}
+
+			for (i = 1; i <= m; i++) {
+				nechet = 0;
+				chet = 0;
+				for (j = 1; j <= n; j++) {
+					A[i - 1][j - 1] = document.getElementById("d" + i + j).value;
+					if (A[i - 1][j - 1] & 1) {
+						nechet++;
+					} else {
+						chet++;
 					}
 				}
-				for (i=1; i<=m; i++){
-					nechet=0;
-					chet=0;
-					for (j=1;j<=n;j++){
-						A[i-1][j-1] = document.getElementById("d"+i+j).value;
-						if ( A[i-1][j-1] & 1 ) {
-							nechet++;
-						} 
-						else {
-							chet++;
-						}
-					}
-					console.log(i+":"+chet);
-					console.log(i+":"+nechet);
-					if(nechet>chet){
-						var s = "s"+i;
-						document.getElementById(String(s)).style.display = "none";
-					}
+				console.log(i + ":" + chet);
+				console.log(i + ":" + nechet);
+				if (nechet > chet) {
+					var s = "s" + i;
+					document.getElementById(String(s)).style.backgroundColor = "red";
+					hasResults = 1;
+					addText("Будет удалена строка №" + i);
 				}
-				console.log(A.valueOf());
 			}
-			
-		</script>
-	</body>
+			console.log(A.valueOf());
+			if (hasResults == 0) {
+				addText("Не найденно строк удоволетворяющих условию!");
+			}
+		}
+	</script>
+</body>
+
 </html>

@@ -16,7 +16,10 @@
 		</div>
 		<div class="row">
 			<div class="col">
-				<h3>Задание:<br>Запомнить коориднаты элемнтов матрицы, которые являются min-ми в своей строки и max-ми в своём столбце</h3>
+				<div class="alert alert-success" role="alert">
+					<h3>Задание:<br>Запомнить коориднаты элемнтов матрицы, которые являются min-ми в своей строки и max-ми в своём
+						столбце</h3>
+				</div>
 			</div>
 		</div>
 		<div class="row">
@@ -121,17 +124,17 @@
 			}
 		}
 
-        function findMin(A){
-            var min = A[0];
-            for(var k=0;k<=n-1;k++){
-                for (var j = 1; j <= m-1; j++) {
-                    if(A[k]<min){
-                        min = A[k];
-                    }
-                }                
-            }
-            return min;
-        }
+		function findMin(A) {
+			var min = A[0];
+			for (var k = 0; k <= n - 1; k++) {
+				for (var j = 1; j <= m - 1; j++) {
+					if (A[k] < min) {
+						min = A[k];
+					}
+				}
+			}
+			return min;
+		}
 
 		function start() {
 			console.clear();
@@ -144,68 +147,67 @@
 				for (j = 1; j <= n; j++) {
 					A[i - 1][j - 1] = document.getElementById("d" + i + j).value;
 				}
-            }
-            console.log(A.valueOf());
+			}
+			console.log(A.valueOf());
 			//начало алгоритма
 			var A1 = new Array(n);
-            var max_array = new Array(n);
-            var min_array = new Array(m);
+			var max_array = new Array(n);
+			var min_array = new Array(m);
 			//Поиск минимума в каждой строке
-			for (i = 0; i <= m-1; i++) {
+			for (i = 0; i <= m - 1; i++) {
 				A1 = [];
-				for (j = 0; j <= n-1; j++) {
-                    A1.push(A[i][j]);
-                }
-                var min = A1[0];
-                var j3 = 1;
-                for(var k=0;k<=n-1;k++){
-                    for (var j = 1; j <= n-1; j++) {
-                        if(A1[k]<min){
-                            min = A1[k];
-                            j3 = k+1;
-                        }
-                    }
-                }
-                var i1 = i+1;
-                var minc = i1+","+j3;
-                min_array[i] = minc;
-            }
-            //Поиск максимума в каждом столбце
-			for (i = 0; i <= n-1; i++) {
+				for (j = 0; j <= n - 1; j++) {
+					A1.push(A[i][j]);
+				}
+				var min = A1[0];
+				var j3 = 1;
+				for (var k = 0; k <= n - 1; k++) {
+					for (var j = 1; j <= n - 1; j++) {
+						if (A1[k] < min) {
+							min = A1[k];
+							j3 = k + 1;
+						}
+					}
+				}
+				var i1 = i + 1;
+				var minc = i1 + "," + j3;
+				min_array[i] = minc;
+			}
+			//Поиск максимума в каждом столбце
+			for (i = 0; i <= n - 1; i++) {
 				A1 = [];
-				for (j = 0; j <= m-1; j++) {
-                    A1.push(A[j][i]);
-                }
-                var max = A1[0];
-                var j3 = 1;
-                for(var k=0;k<=n-1;k++){
-                    for (var j = 1; j <= n-1; j++) {
-                        if(A1[k]>max){
-                            max = A1[k];
-                            j3 = k+1;
-                        }
-                    }
-                }
-                var i1 = i+1;
-                var maxc = j3+","+i1;
-                max_array[i] = maxc;
-            }
-            var ans = [];
-            answ=0;
-            for(i = 0; i<=n-1; i++){
-                for(var i1=0; i1<=m-1; i1++){
-                    if(min_array[i1]==max_array[i]){
-                        answ = 1;
-                        ans.push(min_array[i1]);
-                    }
-                }
-            }
-            if(answ==1){
-                addText("Координаты подходящих элементов: "+ans.valueOf());
-            }
-            else{
-                addText("Не найденно подходящих элементов!");
-            }
+				for (j = 0; j <= m - 1; j++) {
+					A1.push(A[j][i]);
+				}
+				var max = A1[0];
+				var j3 = 1;
+				for (var k = 0; k <= n - 1; k++) {
+					for (var j = 1; j <= n - 1; j++) {
+						if (A1[k] > max) {
+							max = A1[k];
+							j3 = k + 1;
+						}
+					}
+				}
+				var i1 = i + 1;
+				var maxc = j3 + "," + i1;
+				max_array[i] = maxc;
+			}
+			var ans = [];
+			answ = 0;
+			for (i = 0; i <= n - 1; i++) {
+				for (var i1 = 0; i1 <= m - 1; i1++) {
+					if (min_array[i1] == max_array[i]) {
+						answ = 1;
+						ans.push(min_array[i1]);
+					}
+				}
+			}
+			if (answ == 1) {
+				addText("Координаты подходящих элементов: " + ans.valueOf());
+			} else {
+				addText("Не найденно подходящих элементов!");
+			}
 		}
 	</script>
 </body>
